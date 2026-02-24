@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>توليب لبيع مستلزمات الطيور والقطط</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- إعدادات المتغيرات والألوان (نظام الثيمات) --- */
+        :root {
+            /* الألوان الرئيسية - الوضع الفاتح */
+            --primary-color: #ea5eff; /* برتقالي مرح */
+            --secondary-color: #cd4e89; /* تركواز لطيف */
+            --accent-color: #FFE66D; /* أصفر حيوي */
+            --bg-color: #F7F9FC;
+            --surface-color: #FFFFFF;
+            --text-main: #2D3436;
+            --text-light: #636E72;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
+            --shadow-hover: 0 20px 50px -10px rgba(255, 142, 94, 0.3);
+            --border-radius: 20px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            /* الألوان - الوضع الداكن */
+            --bg-color: #221a23;
+            --surface-color: #362535;
+            --text-main: #F1F2F6;
+            --text-light: #A4B0BE;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.5);
+            --shadow-hover: 0 20px 50px -10px rgba(255, 142, 94, 0.15);
+        }
+
+        /* --- التنسيقات العامة --- */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            transition: var(--transition);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+        img { max-width: 100%; display: block; }
+
+        /* --- الأزرار --- */
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 142, 94, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        /* --- الهيدر والناف --- */
+        header {
+            background-color: rgba(var(--surface-color), 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 15px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i { color: var(--secondary-color); animation: bounce 2s infinite; }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            position: relative;
+            color: var(--text-main);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background-color: var(--secondary-color);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .nav-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover { transform: rotate(15deg); color: var(--accent-color); }
+
+        /* --- قسم الهيرو (الرئيسية) --- */
+        .hero {
+            padding: 80px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: 90vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* أشكال خلفية مرحة */
+        .blob {
+            position: absolute;
+            z-index: -1;
+            filter: blur(50px);
+            opacity: 0.4;
+            animation: float 6s ease-in-out infinite;
+        }
+        .blob-1 { top: -10%; right: -10%; width: 400px; height: 400px; background: var(--secondary-color); border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%; }
+        .blob-2 { bottom: -10%; left: -10%; width: 300px; height: 300px; background: var(--primary-color); border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; animation-delay: 1s; }
+
+        .hero-text { flex: 1; max-width: 500px; }
+        .hero-text h1 { font-size: 3.5rem; line-height: 1.2; margin-bottom: 20px; font-weight: 900; }
+        .hero-text span { color: var(--primary-color); }
+        .hero-text p { color: var(--text-light); margin-bottom: 30px; font-size: 1.1rem; }
+        
+        .hero-img { flex: 1; display: flex; justify-content: flex-end; position: relative; }
+        .hero-img img { 
+            border-radius: var(--border-radius); 
+            box-shadow: var(--shadow-hover);
+            transform: rotate(-3deg);
+            transition: var(--transition);
+            max-width: 90%;
+        }
+        .hero-img:hover img { transform: rotate(0) scale(1.02); }
+
+        /* --- الخدمات --- */
+        .section-title { text-align: center; margin-bottom: 50px; }
+        .section-title h2 { font-size: 2.5rem; margin-bottom: 10px; }
+        .section-title p { color: var(--text-light); }
+
+        .services { padding: 80px 0; }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background-color: var(--surface-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-soft);
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--secondary-color);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card-icon {
+            width: 70px;
+            height: 70px;
+            background-color: rgba(78, 205, 196, 0.1);
+            color: var(--secondary-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin: 0 auto 20px;
+            transition: var(--transition);
+        }
+
+        .card:hover .card-icon { background-color: var(--secondary-color); color: white; }
+
+        /* --- المنتجات / المميزات --- */
+        .features { padding: 80px 0; background-color: rgba(255, 142, 94, 0.05); }
+        
+        .product-card {
+            background: var(--surface-color);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .product-card:hover { transform: translateY(-5px); }
+        
+        .product-img { height: 200px; background: #ddd; position: relative; overflow: hidden; }
+        .product-img img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .badge {
+            position: absolute; top: 15px; right: 15px;
+            background: var(--accent-color); color: #333;
+            padding: 5px 12px; border-radius: 15px; font-weight: bold; font-size: 0.8rem;
+        }
+
+        .product-info { padding: 20px; }
+        .product-info h3 { margin-bottom: 10px; font-size: 1.2rem; }
+        .price { color: var(--primary-color); font-weight: 900; font-size: 1.2rem; }
+        .add-btn {
+            width: 100%; margin-top: 15px; padding: 10px;
+            background: var(--text-main); color: var(--bg-color);
+            border: none; border-radius: 10px; cursor: pointer; transition: var(--transition);
+        }
+        .add-btn:hover { background: var(--primary-color); }
+
+        /* --- آراء العملاء --- */
+        .testimonials { padding: 80px 0; }
+        .testimonial-card {
+            background: var(--surface-color);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            box-shadow: var(--shadow-soft);
+        }
+        .client-img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; }
+
+        /* --- CTA --- */
+        .cta-section {
+            padding: 80px 0;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), #ff6b6b);
+            color: white;
+            border-radius: var(--border-radius);
+            margin: 40px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cta-section h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .cta-btn { background: white; color: var(--primary-color); padding: 15px 40px; font-size: 1.2rem; }
+        .cta-btn:hover { background: var(--accent-color); color: #333; transform: scale(1.05); }
+
+        /* --- الفوتر --- */
+        footer {
+            background-color: var(--surface-color);
+            padding: 60px 0 20px;
+            margin-top: 50px;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        .footer-col h4 { margin-bottom: 20px; color: var(--primary-color); }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a { color: var(--text-light); transition: var(--transition); }
+        .footer-col ul li a:hover { color: var(--primary-color); padding-right: 5px; }
+
+        /* --- الأنيميشن --- */
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(10px, 20px); } }
+
+        /* --- سلة المشتريات --- */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 2000;
+        }
+
+        .cart-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #FFFFFF;
+            color: #2D3436;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            max-width: 500px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .cart-content h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .cart-item h4 {
+            flex: 1;
+            margin: 0 10px;
+            font-size: 1rem;
+        }
+
+        .cart-item .price {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .cart-total {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 20px 0;
+            color: var(--primary-color);
+        }
+
+        /* --- التجاوب (Mobile) --- */
+        @media (max-width: 768px) {
+            .hero { flex-direction: column-reverse; text-align: center; padding-top: 40px; }
+            .hero-text h1 { font-size: 2.5rem; }
+            .nav-links { display: none; position: absolute; top: 100%; right: 0; background: var(--surface-color); width: 100%; flex-direction: column; padding: 20px; box-shadow: var(--shadow-soft); }
+            .nav-links.active { display: flex; z-index: 5; }
+            .hamburger { display: flex; flex-direction: column; cursor: pointer; }
+            .hamburger span { width: 25px; height: 3px; background: var(--text-main); margin: 3px 0; transition: var(--transition); }
+            .hamburger.active span:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+            .hero-img { justify-content: center; margin-bottom: 30px; }
+            .services-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">
+                    <i class="fa-solid fa-paw"></i>
+                                  توليب
+                </a>
+                <ul class="nav-links">
+                    <li><a href="#home">الرئيسية</a></li>
+                    <li><a href="#about">من نحن</a></li>
+                    <li><a href="#services">الخدمات</a></li>
+                    <li><a href="#shop">المنتجات</a></li>
+                    <li><a href="#blog">المدونة</a></li>
+                    <li><a href="#contact">تواصل معنا</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="nav-actions">
+                    <button class="theme-toggle" id="theme-toggle">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                    <a href="#login" class="btn btn-secondary" style="padding: 8px 20px;">دخول</a>
+                    <button class="cart-btn" id="cart-btn" style="padding: 8px 20px; background: var(--primary-color); color: white; border: none; border-radius: 50px; cursor: pointer; position: relative;">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        <span class="cart-count" id="cart-count" style="position: absolute; top: -10px; right: -10px; background: var(--accent-color); color: #333; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: bold;">0</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero container" id="home">
+        <div class="hero-text">
+            <h1>دلل حيوانك الأليف <br> مع <span>أفضل المنتجات</span></h1>
+            <p>نوفر لك كل ما يحتاجه صديقك الصغير، من طعام صحي، ألعاب ممتعة، وإكسسوارات أنيقة. تسوق الآن واجعلهم سعداء!</p>
+            <div class="cta-group">
+                <a href="#shop" class="btn btn-primary">تصفح المنتجات</a>
+                <a href="#services" class="btn btn-secondary">خدماتنا</a>
+            </div>
+        </div>
+        <div class="hero-img">
+            <img src="marble.jpg" alt="قطة سعيدة">
+        </div>
+    </section>
+
+    <section class="services container" id="services">
+        <div class="section-title">
+            <h2>خدماتنا المميزة</h2>
+            <p>رعاية متكاملة لأصدقائك الأوفياء</p>
+        </div>
+        <div class="services-grid">
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-bone"></i></div>
+                <h3>طعام صحي</h3>
+                <p>أفضل الماركات العالمية لطعام صحي ومتوازن لجميع الأعمار.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-scissors"></i></div>
+                <h3>عناية ونظافة</h3>
+                <p>خدمات حلاقة واستحمام وعناية فائقة لحيوانك المدلل.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-kit-medical"></i></div>
+                <h3>استشارات بيطرية</h3>
+                <p>فريق طبي متخصص جاهز للإجابة على استفساراتك.</p>
+            </div>
+            <div class="card">
+                <div class="card-icon"><i class="fa-solid fa-truck-fast"></i></div>
+                <h3>توصيل سريع</h3>
+                <p>توصيل لجميع المستلزمات لباب بيتك في أسرع وقت.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="shop">
+        <div class="container">
+            <div class="section-title">
+                <h2>وصل حديثاً</h2>
+                <p>منتجات عصرية لحيوانات سعيدة</p>
+            </div>
+            <div class="services-grid">
+                <div class="product-card">
+                    <div class="badge">جديد</div>
+                    <div class="product-img">
+                        <img src="neck.JPG" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>طوق للقطط</h3>
+                        <div class="price">30 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                 <div class="product-card">
+                    <div class="product-img">
+                        <img src="bird.JPG" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>لطيف لطيورك </h3>
+                        <div class="price">10 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                 <div class="product-card">
+                    <div class="badge">-20%</div>
+                    <div class="product-img">
+                        <img src="home.JPG" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>بيت خشبي مريح</h3>
+                        <div class="price">350 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">جديد</div>
+                    <div class="product-img">
+                        <img src="1 (5).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>قفص طيور لطيف</h3>
+                        <div class="price">25 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="1 (6).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>أرجوحة للطيور</h3>
+                        <div class="price">15 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">-15%</div>
+                    <div class="product-img">
+                        <img src="1 (7).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>وسادة ناعمة للقطط</h3>
+                        <div class="price">40 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">جديد</div>
+                    <div class="product-img">
+                        <img src="1 (8).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>لعبة للقطط</h3>
+                        <div class="price">200 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="1 (9).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>ألعاب للقطط الصغيرة</h3>
+                        <div class="price">20 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">-10%</div>
+                    <div class="product-img">
+                        <img src="1 (10).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>قلادة أنيقة للقطة</h3>
+                        <div class="price">50 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">جديد</div>
+                    <div class="product-img">
+                        <img src="1 (12).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>إكسسوارات للطيور</h3>
+                        <div class="price">35 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="1 (15).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>عود مريح للطيور</h3>
+                        <div class="price">18 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">-25%</div>
+                    <div class="product-img">
+                        <img src="1 (16).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>جلسة تصويرية لأليفك " حجز مسبق"</h3>
+                        <div class="price">120 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">جديد</div>
+                    <div class="product-img">
+                        <img src="1 (27).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>مستلزمات القطط</h3>
+                        <div class="price">45 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="1 (28).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>منزل خشبي للقطط</h3>
+                        <div class="price">30 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">-30%</div>
+                    <div class="product-img">
+                        <img src="1 (30).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>قفص للطيور</h3>
+                        <div class="price">55 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">جديد</div>
+                    <div class="product-img">
+                        <img src="1 (31).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>قفص سفر للقطط</h3>
+                        <div class="price">80 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">
+                        <img src="1 (33).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>وسادة للقطط وقفص للطيور</h3>
+                        <div class="price">22 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="badge">-5%</div>
+                    <div class="product-img">
+                        <img src="1 (35) (1).png" alt="منتج">
+                    </div>
+                    <div class="product-info">
+                        <h3>طعام عضوي للطيور</h3>
+                        <div class="price">60 ر.س</div>
+                        <button class="add-btn">أضف للسلة</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials container">
+        <div class="section-title">
+            <h2>ماذا يقول عملاؤنا؟</h2>
+        </div>
+        <div class="services-grid">
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/women/44.jpg" class="client-img" alt="عميل">
+                <div>
+                    <h4>سارة أحمد</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">"المتجر رائع وتصميم الموقع يفتح النفس، قطتي أحبت الألعاب جداً!"</p>
+                    <div style="color: gold; margin-top: 5px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" class="client-img" alt="عميل">
+                <div>
+                    <h4>عمر خالد</h4>
+                    <p style="font-size: 0.9rem; color: var(--text-light);">"سرعة في التوصيل وجودة المنتجات ممتازة. شكراً لكم."</p>
+                    <div style="color: gold; margin-top: 5px;"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about container" id="about">
+        <div class="section-title">
+            <h2>من نحن</h2>
+            <p>تعرف على متجر توليب</p>
+        </div>
+        <div style="text-align: center; max-width: 800px; margin: 0 auto;">
+            <p style="font-size: 1.1rem; color: var(--text-light); line-height: 1.6;">متجر توليب هو وجهتك الأولى لكل ما يحتاجه حيوانك الأليف. نقدم منتجات عالية الجودة للقطط والطيور، مع التركيز على الصحة والسعادة. فريقنا من الخبراء جاهز لمساعدتك في اختيار الأفضل لصديقك الصغير.</p>
+        </div>
+    </section>
+
+    <section class="blog container" id="blog">
+        <div class="section-title">
+            <h2>المدونة</h2>
+            <p>نصائح ومقالات عن رعاية الحيوانات الأليفة</p>
+        </div>
+        <div class="services-grid">
+            <div class="card">
+                <h3>كيفية اختيار الطعام المناسب لقطتك</h3>
+                <p>دليل شامل لاختيار الطعام الصحي الذي يناسب عمر قطتك وصحتها.</p>
+                <a href="#" class="btn btn-secondary" style="margin-top: 15px;">اقرأ المزيد</a>
+            </div>
+            <div class="card">
+                <h3>رعاية الطيور في المنزل</h3>
+                <p>نصائح عملية للحفاظ على صحة طائرك وإسعاده يومياً.</p>
+                <a href="#" class="btn btn-secondary" style="margin-top: 15px;">اقرأ المزيد</a>
+            </div>
+            <div class="card">
+                <h3>ألعاب تفاعلية للحيوانات الأليفة</h3>
+                <p>اكتشف أفضل الألعاب التي تحفز ذكاء قطتك أو طائرك.</p>
+                <a href="#" class="btn btn-secondary" style="margin-top: 15px;">اقرأ المزيد</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact container" id="contact">
+        <div class="section-title">
+            <h2>تواصل معنا</h2>
+            <p>نحن هنا لمساعدتك واعطاءك استشارات بيطرية موثوقة بأسرع وقت</p>
+        </div>
+        <div style="max-width: 600px; margin: 0 auto;">
+            <form style="display: flex; flex-direction: column; gap: 15px;">
+                <input type="text" placeholder="اسمك" style="padding: 12px; border: 1px solid var(--text-light); border-radius: 10px; font-size: 1rem;">
+                <input type="email" placeholder="بريدك الإلكتروني" style="padding: 12px; border: 1px solid var(--text-light); border-radius: 10px; font-size: 1rem;">
+                <textarea placeholder="رسالتك" rows="5" style="padding: 12px; border: 1px solid var(--text-light); border-radius: 10px; font-size: 1rem;"></textarea>
+                <button type="submit" class="btn btn-primary">إرسال</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="cta-section">
+            <h2>هل أنت جاهز لإسعاد صديقك؟</h2>
+            <p style="margin-bottom: 30px;">اشترك الآن في نشرتنا البريدية واحصل على خصم 15% على أول طلب.</p>
+            <a href="#" class="btn cta-btn">سجل الآن</a>
+        </div>
+    </section>
+
+    <!-- Cart Modal -->
+    <div class="cart-modal" id="cart-modal">
+        <div class="cart-content">
+            <h2>سلة المشتريات</h2>
+            <div id="cart-items"></div>
+            <div class="cart-total" id="cart-total">المجموع: 0 ر.س</div>
+            <button class="btn btn-primary" style="margin-top: 20px;">إتمام الشراء</button>
+            <button class="btn btn-secondary" onclick="closeCart()" style="margin-top: 10px;">إغلاق</button>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <a href="#" class="logo" style="margin-bottom: 20px; display:inline-block;">
+                        <i class="fa-solid fa-paw"></i>  توليب
+
+                    </a>
+                    <p style="color: var(--text-light); font-size: 0.9rem;">متجرك الأول لكل ما يخص الحيوانات الأليفة، نصنع السعادة لأصدقائك الصغار.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>روابط سريعة</h4>
+                    <ul>
+                        <li><a href="#">الرئيسية</a></li>
+                        <li><a href="#">من نحن</a></li>
+                        <li><a href="#">المدونة</a></li>
+                        <li><a href="#">اتصل بنا</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>حسابي</h4>
+                    <ul>
+                        <li><a href="#">تسجيل الدخول</a></li>
+                        <li><a href="#">سلة المشتريات</a></li>
+                        <li><a href="#">تتبع الطلب</a></li>
+                        <li><a href="#">لوحة التحكم</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>تواصل معنا</h4>
+                    <ul>
+                        <li><i class="fa-solid fa-envelope"></i> asmarb37@icloud.com</li>
+                        <li><i class="fa-solid fa-phone"></i> +967 778 532 932</li>
+                        <li style="margin-top: 15px;">
+                            <!-- <a href="https://www.instagram.com/kittycat_marble?igsh=a2drdG4wNDdlcnpi&utm_source=qr" style="margin-left: 10px; font-size: 1.2rem;"><i class="fa-brands fa-instagram"></i></a> -->
+                            <a href="https://www.instagram.com/tulip_store44/?hl=ar"><i class="fa-brands fa-instagram"></i></a>
+                            <a href="https://wa.me/967776212233" style="margin-left: 10px; font-size: 1.2rem;"><i class="fa-brands fa-whatsapp"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="text-align: center; color: var(--text-light); border-top: 1px solid rgba(0,0,0,0.1); padding-top: 20px; font-size: 0.8rem;">
+                &copy; 2026 Tulips. جميع الحقوق محفوظة.
+            </div>
+        </div>
+    </footer>
+<!-- js: -->
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const icon = toggleBtn.querySelector('i');
+        const htmlElement = document.documentElement;
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const cartBtn = document.getElementById('cart-btn');
+        const cartModal = document.getElementById('cart-modal');
+        const cartCount = document.getElementById('cart-count');
+        const cartItems = document.getElementById('cart-items');
+        const cartTotal = document.getElementById('cart-total');
+
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        updateCart();
+
+        if (localStorage.getItem('theme') === 'dark') {
+            htmlElement.setAttribute('data-theme', 'dark');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+        }
+
+        toggleBtn.addEventListener('click', () => {
+            if (htmlElement.getAttribute('data-theme') === 'dark') {
+                htmlElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            } else {
+                htmlElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            }
+        });
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+
+        cartBtn.addEventListener('click', () => {
+            cartModal.style.display = 'flex';
+        });
+
+        function closeCart() {
+            cartModal.style.display = 'none';
+        }
+
+        document.querySelectorAll('.add-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                const productCard = btn.closest('.product-card');
+                const name = productCard.querySelector('h3').textContent;
+                const priceText = productCard.querySelector('.price').textContent;
+                const price = parseFloat(priceText.replace(' ر.س', ''));
+                const imgSrc = productCard.querySelector('img').src;
+
+                const product = { name, price, imgSrc };
+                cart.push(product);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCart();
+            });
+        });
+
+        function updateCart() {
+            cartCount.textContent = cart.length;
+            cartItems.innerHTML = '';
+            let total = 0;
+            cart.forEach((item, index) => {
+                total += item.price;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <img src="${item.imgSrc}" alt="${item.name}" style="width: 50px; height: 50px; object-fit: cover; border-radius: 5px; margin-left: 10px;">
+                    <h4>${item.name}</h4>
+                    <span class="price">${item.price} ر.س</span>
+                    <button onclick="removeFromCart(${index})" style="background: red; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer;">حذف</button>
+                `;
+                cartItems.appendChild(itemDiv);
+            });
+            cartTotal.textContent = `المجموع: ${total} ر.س`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCart();
+        }
+    </script>
+    
+</body>
+</html>
